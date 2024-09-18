@@ -1,4 +1,5 @@
 ﻿using ms_configuration.Ms_configuration.Models;
+using ms_notification.Constants;
 using ms_notification.Models;
 using ms_notification.Services.ConfigurationService;
 using ms_notification.Services.NotificationsService;
@@ -70,24 +71,13 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
             Console.WriteLine($"Received message from {_queueName}: {message}");
 
-            switch (ea.RoutingKey)
-            {
-                case "CreateRecipResult":
-                    {
-                        await HandleCreateRecipAsync(message);
-                    }
-                    break;
-                default:
-
-                    break;
-            }
-
+            await HandleRecipAsync(message, ea.RoutingKey);
         };
 
         _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
     }
 
-    private async Task HandleCreateRecipAsync(string message)
+    private async Task HandleRecipAsync(string message, string routingKey)
     {
         try
         {
@@ -99,15 +89,43 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
                 var notificationsService = scope.ServiceProvider.GetRequiredService<INotificationsService>();
 
-                await notificationsService.CreateAsync(new NotificationModel 
-                { 
-                    ApplicationName = deserializedMessage.ApplicationName,
-                    // TODO translate
-                    Content = $"The recip {deserializedMessage.Payload.Name} has been created",
-                    UserId = deserializedMessage.UserId,
-                    Timestamp = DateTime.UtcNow,
-                });
+                string notificationContent ;
 
+                switch (routingKey)
+                {
+                    case RabbitmqConstants.CreateRecipResultRoutingKey:
+                        {
+                            notificationContent = $"The recip {deserializedMessage.Payload.Name} has been created";
+                        }
+                        break;
+                    
+                    case RabbitmqConstants.UpdateRecipResultRoutingKey:
+                        {
+                            notificationContent = $"The recip {deserializedMessage.Payload.Name} has been updated";
+                        }
+                        break;
+                    
+                    case RabbitmqConstants.DeleteRecipResultRoutingKey:
+                        {
+                            notificationContent = $"The recip {deserializedMessage.Payload.Name} has been deleted";
+                        }
+                        break;
+
+                    default:
+                        notificationContent = string.Empty;
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(notificationContent))
+                {
+                    await notificationsService.CreateAsync(new NotificationModel
+                    {
+                        ApplicationName = deserializedMessage.ApplicationName,
+                        Content = notificationContent,
+                        UserId = deserializedMessage.UserId,
+                        Timestamp = DateTime.UtcNow,
+                    });
+                }
             }
         }
         catch (Exception ex)
