@@ -65,7 +65,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Id\": \"035f3bd2-e77d-45bc-9a04-6d11b5ffc2f4\",\r\n    \"UserId\": \"123123\",\r\n    \"Content\": \"creation recip arar\",\r\n    \"ApplicationName\": \"testput\",\r\n    \"Timestamp\": \"2024-09-09T18:16:59.465+02:00\",\r\n    \"IsRead\": true,\r\n    \"Deleted\": false\r\n}",
+					"raw": "{\r\n    \"Id\": \"c3bf18fe-ffd3-4d31-b368-9ae95253d6f6\",\r\n    \"UserId\": \"123123\",\r\n    \"Content\": \"creation recip arar\",\r\n    \"ApplicationName\": \"testput\",\r\n    \"Timestamp\": \"2024-09-09T18:16:59.465+02:00\",\r\n    \"IsRead\": true,\r\n    \"Deleted\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -73,13 +73,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/odata/Notifications(035f3bd2-e77d-45bc-9a04-6d11b5ffc2f4)",
+					"raw": "{{url}}/odata/Notifications(c3bf18fe-ffd3-4d31-b368-9ae95253d6f6)",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"odata",
-						"Notifications(035f3bd2-e77d-45bc-9a04-6d11b5ffc2f4)"
+						"Notifications(c3bf18fe-ffd3-4d31-b368-9ae95253d6f6)"
 					]
 				}
 			},

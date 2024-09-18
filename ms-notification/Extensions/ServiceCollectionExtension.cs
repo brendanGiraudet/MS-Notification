@@ -5,6 +5,7 @@ using ms_notification.Data;
 using ms_notification.Models;
 using ms_notification.Services.ConfigurationService;
 using ms_notification.Services.LoggerService;
+using ms_notification.Services.NotificationsService;
 using ms_notification.Services.RabbitMq;
 using ms_notification.Settings;
 using System.Text.Json.Serialization;
@@ -53,5 +54,6 @@ public static class ServiceCollectionExtension
     {
         services.AddTransient<ILogger, LoggerService>();
         services.AddTransient<IConfigurationService, ConfigurationService>();
+        services.AddTransient<INotificationsService, NotificationsService>();
     }
 }

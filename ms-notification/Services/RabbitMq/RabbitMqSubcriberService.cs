@@ -99,13 +99,12 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
                 var notificationsService = scope.ServiceProvider.GetRequiredService<INotificationsService>();
 
-
-
                 await notificationsService.CreateAsync(new NotificationModel 
                 { 
                     ApplicationName = deserializedMessage.ApplicationName,
+                    // TODO translate
                     Content = $"The recip {deserializedMessage.Payload.Name} has been created",
-                    UserId = "",
+                    UserId = deserializedMessage.UserId,
                     Timestamp = DateTime.UtcNow,
                 });
 
