@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "0868158f-bf24-420c-96ad-bdbdf97013c6",
+		"name": "MS-Notification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23806707",
+		"_collection_link": "https://bakayaru.postman.co/workspace/Team-Workspace~541a9c44-c0ea-4244-8532-846acb88cbb2/collection/23806707-0868158f-bf24-420c-96ad-bdbdf97013c6?action=share&source=collection_link&creator=23806707"
+	},
+	"item": [
+		{
+			"name": "/odata/Notifications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/odata/Notifications?$top=2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"odata",
+						"Notifications"
+					],
+					"query": [
+						{
+							"key": "$top",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/odata/Notifications",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"123123\",\r\n  \"content\": \"creatino recip arar\",\r\n  \"timestamp\": \"2024-09-09T16:16:59.465Z\",\r\n  \"applicationName\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/odata/Notifications",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"odata",
+						"Notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/odata/Notifications(id)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\": \"035f3bd2-e77d-45bc-9a04-6d11b5ffc2f4\",\r\n    \"UserId\": \"123123\",\r\n    \"Content\": \"creation recip arar\",\r\n    \"ApplicationName\": \"testput\",\r\n    \"Timestamp\": \"2024-09-09T18:16:59.465+02:00\",\r\n    \"IsRead\": true,\r\n    \"Deleted\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/odata/Notifications(035f3bd2-e77d-45bc-9a04-6d11b5ffc2f4)",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"odata",
+						"Notifications(035f3bd2-e77d-45bc-9a04-6d11b5ffc2f4)"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

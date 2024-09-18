@@ -1,0 +1,28 @@
+version: "3.4"
+services:
+  ms-notification:
+    image: bakayarusama/ms-notification:1.0.0
+    container_name: ms-notification
+    
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - configuration=Debug
+        - plateform=windows/amd64
+    ports: 
+      - 2020:8080
+    
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ApplicationVersion: 1.0.0
+      ConnectionStrings__Database: "Data Source=/app/Data/database.db"
+
+      MSConfigurationSettings__OdataBaseUrl: "https://ms-configuration-local.brendan-giraudet.com/odata"
+      
+      RabbitMqQueueName: "ms-notification"
+
+    volumes:
+      - C:\Users\brend\Source\Repos\brendanGiraudet\MS-notification\ms-notification\Data:/app/Data
+      
+    restart: always

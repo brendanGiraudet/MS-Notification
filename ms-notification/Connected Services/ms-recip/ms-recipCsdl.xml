@@ -1,0 +1,147 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="ms_recip.Models" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="RecipModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Image" Type="Edm.String" Nullable="false" />
+        <Property Name="Authorname" Type="Edm.String" Nullable="false" />
+        <Property Name="PersonNumber" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CookingDuration" Type="Edm.DateTimeOffset" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Categories" Type="Collection(ms_recip.Models.RecipCategoryModel)" />
+        <NavigationProperty Name="Steps" Type="Collection(ms_recip.Models.RecipStepModel)" />
+        <NavigationProperty Name="IngredientQuantities" Type="Collection(ms_recip.Models.IngredientQuantityModel)" />
+      </EntityType>
+      <EntityType Name="IngredientModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Image" Type="Edm.String" Nullable="false" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+      </EntityType>
+      <EntityType Name="CategoryModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Recips" Type="Collection(ms_recip.Models.RecipCategoryModel)" />
+        <Property Name="Profils" Type="Collection(ms_recip.Models.ProfilCategoryModel)" />
+      </EntityType>
+      <EntityType Name="ProfilModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Categories" Type="Collection(ms_recip.Models.ProfilCategoryModel)" />
+        <NavigationProperty Name="Users" Type="Collection(ms_recip.Models.UserModel)" />
+      </EntityType>
+      <EntityType Name="RecipStepModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Label" Type="Edm.String" Nullable="false" />
+        <Property Name="RecipId" Type="Edm.Guid" />
+        <NavigationProperty Name="Recip" Type="ms_recip.Models.RecipModel">
+          <ReferentialConstraint Property="RecipId" ReferencedProperty="Id" />
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="UserModel">
+        <Key>
+          <PropertyRef Name="UserId" />
+        </Key>
+        <Property Name="UserId" Type="Edm.String" Nullable="false" />
+        <Property Name="ProfilId" Type="Edm.Guid" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+        <NavigationProperty Name="Profil" Type="ms_recip.Models.ProfilModel">
+          <ReferentialConstraint Property="ProfilId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="RecipCalendars" Type="Collection(ms_recip.Models.RecipCalendarModel)" />
+      </EntityType>
+      <EntityType Name="RecipCalendarModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="UserId" Type="Edm.String" />
+        <Property Name="RecipId" Type="Edm.Guid" />
+        <Property Name="Date" Type="Edm.DateTimeOffset" Nullable="false" />
+        <NavigationProperty Name="User" Type="ms_recip.Models.UserModel">
+          <ReferentialConstraint Property="UserId" ReferencedProperty="UserId" />
+        </NavigationProperty>
+        <NavigationProperty Name="Recip" Type="ms_recip.Models.RecipModel">
+          <ReferentialConstraint Property="RecipId" ReferencedProperty="Id" />
+        </NavigationProperty>
+      </EntityType>
+      <ComplexType Name="RecipCategoryModel">
+        <Property Name="RecipId" Type="Edm.Guid" Nullable="false" />
+        <Property Name="CategoryId" Type="Edm.Guid" Nullable="false" />
+        <NavigationProperty Name="Recip" Type="ms_recip.Models.RecipModel" />
+        <NavigationProperty Name="Category" Type="ms_recip.Models.CategoryModel" />
+      </ComplexType>
+      <ComplexType Name="ProfilCategoryModel">
+        <Property Name="ProfilId" Type="Edm.Guid" Nullable="false" />
+        <Property Name="CategoryId" Type="Edm.Guid" Nullable="false" />
+        <NavigationProperty Name="Profil" Type="ms_recip.Models.ProfilModel" />
+        <NavigationProperty Name="Category" Type="ms_recip.Models.CategoryModel" />
+      </ComplexType>
+      <EntityType Name="IngredientQuantityModel">
+        <Key>
+          <PropertyRef Name="RecipId" />
+        </Key>
+        <Property Name="Quantity" Type="Edm.Decimal" Nullable="false" Scale="variable" />
+        <Property Name="MeasureUnit" Type="Edm.String" Nullable="false" />
+        <Property Name="RecipId" Type="Edm.Guid" />
+        <Property Name="IngredientId" Type="Edm.Guid" />
+        <NavigationProperty Name="Recip" Type="ms_recip.Models.RecipModel">
+          <ReferentialConstraint Property="RecipId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Ingredient" Type="ms_recip.Models.IngredientModel">
+          <ReferentialConstraint Property="IngredientId" ReferencedProperty="Id" />
+        </NavigationProperty>
+      </EntityType>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="Container">
+        <EntitySet Name="Recips" EntityType="ms_recip.Models.RecipModel">
+          <NavigationPropertyBinding Path="Categories/Category" Target="Categories" />
+          <NavigationPropertyBinding Path="Categories/Recip" Target="Recips" />
+          <NavigationPropertyBinding Path="Steps" Target="RecipSteps" />
+        </EntitySet>
+        <EntitySet Name="Ingredients" EntityType="ms_recip.Models.IngredientModel" />
+        <EntitySet Name="Categories" EntityType="ms_recip.Models.CategoryModel">
+          <NavigationPropertyBinding Path="Profils/Category" Target="Categories" />
+          <NavigationPropertyBinding Path="Profils/Profil" Target="Profils" />
+          <NavigationPropertyBinding Path="Recips/Category" Target="Categories" />
+          <NavigationPropertyBinding Path="Recips/Recip" Target="Recips" />
+        </EntitySet>
+        <EntitySet Name="Profils" EntityType="ms_recip.Models.ProfilModel">
+          <NavigationPropertyBinding Path="Categories/Category" Target="Categories" />
+          <NavigationPropertyBinding Path="Categories/Profil" Target="Profils" />
+          <NavigationPropertyBinding Path="Users" Target="Users" />
+        </EntitySet>
+        <EntitySet Name="RecipSteps" EntityType="ms_recip.Models.RecipStepModel">
+          <NavigationPropertyBinding Path="Recip" Target="Recips" />
+        </EntitySet>
+        <EntitySet Name="Users" EntityType="ms_recip.Models.UserModel">
+          <NavigationPropertyBinding Path="Profil" Target="Profils" />
+          <NavigationPropertyBinding Path="RecipCalendars" Target="RecipCalendars" />
+        </EntitySet>
+        <EntitySet Name="RecipCalendars" EntityType="ms_recip.Models.RecipCalendarModel">
+          <NavigationPropertyBinding Path="Recip" Target="Recips" />
+          <NavigationPropertyBinding Path="User" Target="Users" />
+        </EntitySet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

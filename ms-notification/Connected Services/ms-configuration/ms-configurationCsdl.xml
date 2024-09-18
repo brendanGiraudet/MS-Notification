@@ -1,0 +1,36 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="ms_configuration.Models" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="RabbitMqConfigModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Hostname" Type="Edm.String" Nullable="false" />
+        <Property Name="Port" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Username" Type="Edm.String" Nullable="false" />
+        <Property Name="Password" Type="Edm.String" Nullable="false" />
+        <Property Name="CreationDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+      </EntityType>
+      <EntityType Name="RabbitMqRoutingKeyModel">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Guid" Nullable="false" />
+        <Property Name="Exchange" Type="Edm.String" Nullable="false" />
+        <Property Name="Queue" Type="Edm.String" Nullable="false" />
+        <Property Name="RoutingKey" Type="Edm.String" Nullable="false" />
+        <Property Name="ActionName" Type="Edm.String" Nullable="false" />
+        <Property Name="CreationDate" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Deleted" Type="Edm.Boolean" Nullable="false" />
+      </EntityType>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="Container">
+        <EntitySet Name="RabbitMqConfigs" EntityType="ms_configuration.Models.RabbitMqConfigModel" />
+        <EntitySet Name="RabbitMqRoutingKeys" EntityType="ms_configuration.Models.RabbitMqRoutingKeyModel" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
