@@ -11,7 +11,7 @@ services:
         - configuration=Debug
         - plateform=windows/amd64
     ports: 
-      - 2020:8080
+      - 2121:8080
     
     environment:
       ASPNETCORE_ENVIRONMENT: Development
