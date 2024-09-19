@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   ms-notification:
-    image: bakayarusama/ms-notification:1.0.2
+    image: bakayarusama/ms-notification:1.0.3
     container_name: ms-notification
     
     build:
@@ -15,7 +15,7 @@ services:
     
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ApplicationVersion: 1.0.2
+      ApplicationVersion: 1.0.3
       ConnectionStrings__Database: "Data Source=/app/Data/database.db"
 
       MSConfigurationSettings__OdataBaseUrl: "https://ms-configuration-local.brendan-giraudet.com/odata"

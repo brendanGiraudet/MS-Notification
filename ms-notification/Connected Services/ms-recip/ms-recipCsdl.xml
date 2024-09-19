@@ -8,6 +8,7 @@
         <Property Name="Id" Type="Edm.Guid" Nullable="false" />
         <Property Name="Name" Type="Edm.String" Nullable="false" />
         <Property Name="Image" Type="Edm.String" Nullable="false" />
+        <Property Name="AuthorId" Type="Edm.String" Nullable="false" />
         <Property Name="Authorname" Type="Edm.String" Nullable="false" />
         <Property Name="PersonNumber" Type="Edm.Int32" Nullable="false" />
         <Property Name="CookingDuration" Type="Edm.DateTimeOffset" />

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 17/09/2024 16:23:26
+// Generation date: 19/09/2024 11:07:52
 namespace ms_recip.Ms_recip.Models
 {
     /// <summary>
@@ -96,6 +96,7 @@ namespace ms_recip.Ms_recip.Models
         /// <param name="ID">Initial value of Id.</param>
         /// <param name="name">Initial value of Name.</param>
         /// <param name="image">Initial value of Image.</param>
+        /// <param name="authorId">Initial value of AuthorId.</param>
         /// <param name="authorname">Initial value of Authorname.</param>
         /// <param name="personNumber">Initial value of PersonNumber.</param>
         /// <param name="deleted">Initial value of Deleted.</param>
@@ -103,6 +104,7 @@ namespace ms_recip.Ms_recip.Models
         public static RecipModel CreateRecipModel(global::System.Guid ID, 
                     string name, 
                     string image, 
+                    string authorId, 
                     string authorname, 
                     int personNumber, 
                     bool deleted)
@@ -111,6 +113,7 @@ namespace ms_recip.Ms_recip.Models
             recipModel.Id = ID;
             recipModel.Name = name;
             recipModel.Image = image;
+            recipModel.AuthorId = authorId;
             recipModel.Authorname = authorname;
             recipModel.PersonNumber = personNumber;
             recipModel.Deleted = deleted;
@@ -188,6 +191,30 @@ namespace ms_recip.Ms_recip.Models
         private string _Image;
         partial void OnImageChanging(string value);
         partial void OnImageChanged();
+        /// <summary>
+        /// There are no comments for Property AuthorId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
+        [global::Microsoft.OData.Client.OriginalNameAttribute("AuthorId")]
+        [global::System.ComponentModel.DataAnnotations.RequiredAttribute(ErrorMessage = "AuthorId is required.")]
+        public virtual string AuthorId
+        {
+            get
+            {
+                return this._AuthorId;
+            }
+            set
+            {
+                this.OnAuthorIdChanging(value);
+                this._AuthorId = value;
+                this.OnAuthorIdChanged();
+                this.OnPropertyChanged("AuthorId");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.OData.Client.Design.T4", "#VersionNumber#")]
+        private string _AuthorId;
+        partial void OnAuthorIdChanging(string value);
+        partial void OnAuthorIdChanged();
         /// <summary>
         /// There are no comments for Property Authorname in the schema.
         /// </summary>
