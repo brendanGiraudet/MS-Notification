@@ -20,4 +20,23 @@ public class NotificationsService(DatabaseContext _context) : INotificationsServ
             return MethodResult<NotificationModel>.CreateErrorResult(ex.Message);
         }
     }
+    
+    /// <inheritdoc/>
+    public async Task<MethodResult<NotificationModel>> DeleteAsync(NotificationModel notificationModel)
+    {
+        try
+        {
+            notificationModel.Deleted = true;
+
+            _context.Notifications.Update(notificationModel);
+
+            _context.SaveChanges();
+
+            return MethodResult<NotificationModel>.CreateSuccessResult(notificationModel);
+        }
+        catch (Exception ex)
+        {
+            return MethodResult<NotificationModel>.CreateErrorResult(ex.Message);
+        }
+    }
 }

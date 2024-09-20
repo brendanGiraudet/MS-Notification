@@ -71,12 +71,51 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
             Console.WriteLine($"Received message from {_queueName}: {message}");
 
-            await HandleRecipAsync(message, ea.RoutingKey);
+            if (ea.Exchange == RabbitmqConstants.RecipExchangeName)
+            {
+                await HandleRecipAsync(message, ea.RoutingKey);
+            }
+            else if (ea.Exchange == RabbitmqConstants.NotificationExchangeName)
+            {
+                await HandleNotificationAsync(message, ea.RoutingKey);
+            }
         };
 
         _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
     }
 
+    private async Task HandleNotificationAsync(string message, string routingKey)
+    {
+        try
+        {
+            var deserializedMessage = JsonSerializer.Deserialize<RabbitMqMessageBase<NotificationModel>>(message);
+
+            if (deserializedMessage != null)
+            {
+                using var scope = _serviceProvider.CreateScope();
+
+                var notificationsService = scope.ServiceProvider.GetRequiredService<INotificationsService>();
+
+                switch (routingKey)
+                {
+                    case RabbitmqConstants.DeleteNotificationRoutingKey:
+                        {
+                            await notificationsService.DeleteAsync(deserializedMessage.Payload);
+                        }
+                        break;
+
+                    default:
+                        
+                        break;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors du traitement du message: {ex.Message}");
+        }
+    }
+    
     private async Task HandleRecipAsync(string message, string routingKey)
     {
         try
@@ -89,7 +128,7 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
                 var notificationsService = scope.ServiceProvider.GetRequiredService<INotificationsService>();
 
-                string notificationContent ;
+                string notificationContent;
 
                 switch (routingKey)
                 {
@@ -98,13 +137,13 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
                             notificationContent = $"The recip {deserializedMessage.Payload.Name} has been created";
                         }
                         break;
-                    
+
                     case RabbitmqConstants.UpdateRecipResultRoutingKey:
                         {
                             notificationContent = $"The recip {deserializedMessage.Payload.Name} has been updated";
                         }
                         break;
-                    
+
                     case RabbitmqConstants.DeleteRecipResultRoutingKey:
                         {
                             notificationContent = $"The recip {deserializedMessage.Payload.Name} has been deleted";

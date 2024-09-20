@@ -10,4 +10,11 @@ public interface INotificationsService
     /// <param name="notificationModel"></param>
     /// <returns></returns>
     Task<MethodResult<NotificationModel>> CreateAsync(NotificationModel notificationModel);
+    
+    /// <summary>
+    /// Delete notification
+    /// </summary>
+    /// <param name="notificationModel"></param>
+    /// <returns></returns>
+    Task<MethodResult<NotificationModel>> DeleteAsync(NotificationModel notificationModel);
 }
