@@ -17,4 +17,11 @@ public static class RabbitmqConstants
     
     // NOTIFICATION
     public const string DeleteNotificationRoutingKey = "DeleteNotification";
+
+    // INGREDIENT
+    public const string CreateIngredientResultRoutingKey = "CreateIngredientResult";
+
+    public const string UpdateIngredientResultRoutingKey = "UpdateIngredientResult";
+
+    public const string DeleteIngredientResultRoutingKey = "DeleteIngredientResult";
 }

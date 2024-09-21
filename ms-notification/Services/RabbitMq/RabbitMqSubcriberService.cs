@@ -71,10 +71,18 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
             Console.WriteLine($"Received message from {_queueName}: {message}");
 
-            if (ea.Exchange == RabbitmqConstants.RecipExchangeName)
+            if (ea.Exchange == RabbitmqConstants.RecipExchangeName
+                && RecipActions.Contains(ea.RoutingKey))
             {
                 await HandleRecipAsync(message, ea.RoutingKey);
             }
+            
+            else if (ea.Exchange == RabbitmqConstants.RecipExchangeName
+                    && IngredientActions.Contains(ea.RoutingKey))
+            {
+                await HandleNotificationAsync(message, ea.RoutingKey);
+            }
+            
             else if (ea.Exchange == RabbitmqConstants.NotificationExchangeName)
             {
                 await HandleNotificationAsync(message, ea.RoutingKey);
@@ -83,6 +91,20 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
 
         _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
     }
+
+    private string[] RecipActions =
+    {
+        RabbitmqConstants.CreateIngredientResultRoutingKey,
+        RabbitmqConstants.UpdateIngredientResultRoutingKey,
+        RabbitmqConstants.DeleteIngredientResultRoutingKey
+    };
+    
+    private string[] IngredientActions =
+    {
+        RabbitmqConstants.CreateIngredientResultRoutingKey,
+        RabbitmqConstants.UpdateIngredientResultRoutingKey,
+        RabbitmqConstants.DeleteIngredientResultRoutingKey
+    };
 
     private async Task HandleNotificationAsync(string message, string routingKey)
     {
@@ -147,6 +169,63 @@ public class RabbitMqSubscriberService : IHostedService, IDisposable
                     case RabbitmqConstants.DeleteRecipResultRoutingKey:
                         {
                             notificationContent = $"The recip {deserializedMessage.Payload.Name} has been deleted";
+                        }
+                        break;
+
+                    default:
+                        notificationContent = string.Empty;
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(notificationContent))
+                {
+                    await notificationsService.CreateAsync(new NotificationModel
+                    {
+                        ApplicationName = deserializedMessage.ApplicationName,
+                        Content = notificationContent,
+                        UserId = deserializedMessage.UserId,
+                        Timestamp = DateTime.UtcNow,
+                    });
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors du traitement du message: {ex.Message}");
+        }
+    }
+    
+    private async Task HandleIngredientAsync(string message, string routingKey)
+    {
+        try
+        {
+            var deserializedMessage = JsonSerializer.Deserialize<RabbitMqMessageBase<IngredientModel>>(message);
+
+            if (deserializedMessage != null)
+            {
+                using var scope = _serviceProvider.CreateScope();
+
+                var notificationsService = scope.ServiceProvider.GetRequiredService<INotificationsService>();
+
+                string notificationContent;
+
+                switch (routingKey)
+                {
+                    case RabbitmqConstants.CreateIngredientResultRoutingKey:
+                        {
+                            notificationContent = $"The ingredient {deserializedMessage.Payload.Name} has been created";
+                        }
+                        break;
+
+                    case RabbitmqConstants.UpdateIngredientResultRoutingKey:
+                        {
+                            notificationContent = $"The ingredient {deserializedMessage.Payload.Name} has been updated";
+                        }
+                        break;
+
+                    case RabbitmqConstants.DeleteIngredientResultRoutingKey:
+                        {
+                            notificationContent = $"The ingredient {deserializedMessage.Payload.Name} has been deleted";
                         }
                         break;
 
